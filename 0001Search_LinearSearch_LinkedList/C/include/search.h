@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-#define NAME_LEN 15
+#define NAME_LEN 16
 
 //Type definitions and declarations
 typedef struct _NODE NODE;
@@ -30,6 +30,7 @@ struct _LIST {
 	LIST *(*Add)(LIST *);
 	LIST *(*Change)(LIST *, char *, int);
 	LIST *(*Clear)(LIST *);
+	NODE *(*Search)(LIST *, char *);
 };
 
 //Function Declarations
@@ -38,8 +39,10 @@ void NODE_DESTRUCTOR(NODE *);
 NODE *NODE_METHOD_Random(NODE *);
 void LIST_CONSTRUCTOR(LIST *);
 void LIST_DESTRUCTOR(LIST *);
+NODE *LIST_METHOD_Index(LIST *, int);
 LIST *LIST_METHOD_Add(LIST *);
 LIST *LIST_METHOD_Change(LIST *, char *, int);
-NODE *LIST_METHOD_Index(LIST *, int);
+LIST *LIST_METHOD_Clear(LIST *);
+NODE *LIST_METHOD_Search(LIST *, char *);
 
 #endif
