@@ -1,6 +1,7 @@
 #include "search.hh"
 
 static const char letterCollection[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+NODE g_SearchFail;
 
 NODE::NODE(void)
 {
@@ -18,6 +19,7 @@ NODE::~NODE(void)
 NODE *NODE::Random(void)
 {
 	int len = rand()%8;
+	len += 1;
 	(this->name).clear();
 	for (int i=0 ; i<len ; i++){
 		(this->name) += letterCollection[rand()%62];
@@ -49,16 +51,16 @@ int ARRAY::Size(void)
 
 	return ret;
 }
+
 NODE &ARRAY::operator[](int indexArg)
 {
-	NODE &ret = *((this->nodeArray).end());
 	//Exception Handling
 	if (indexArg >= (*this).Size()){
 		COUT_ERROR << "ERROR: indexArg >= size" COLOR_BLACK << std::endl;
-		return ret;
+		throw std::out_of_range("");
 	}
 
-	ret = (this->nodeArray)[indexArg];
+	NODE &ret = (this->nodeArray)[indexArg];
 
 	return ret;
 }
@@ -83,11 +85,10 @@ ARRAY *ARRAY::AddRandom(int sizeArg)
 
 NODE &ARRAY::ChangeRandomElement(std::string &nameArg, int numArg)
 {
-	NODE &ret = *((this->nodeArray).end());
-
 	int currentSize = (*this).Size();
 	int index = rand()%currentSize;
-	ret = (*this)[index];
+	NODE &ret = (*this)[index];
+
 	ret.name = nameArg;
 	ret.number = numArg;
 
@@ -96,9 +97,9 @@ NODE &ARRAY::ChangeRandomElement(std::string &nameArg, int numArg)
 
 ARRAY *ARRAY::Print(void)
 {
+
 	for (int i=0; i<(*this).Size() ; i++){
 		std::cout << "[" << i << "] " << "Name: " << (*this)[i].name << ", Number: " << (*this)[i].number << std::endl;
-		return NULL;
 	}
 
 	return this;
@@ -126,8 +127,33 @@ ARRAY *ARRAY::Sort(void)
 	return this;
 }
 
-NODE &ARRAY::BinarySearch(std::string &)
+NODE &ARRAY::BinarySearch(std::string &nameArg)
 {
-	NODE &ret = *((this->nodeArray).end());
+	int begin=0, end=0, mid=0;
+	const char *midStr=NULL, *tempStr=nameArg.c_str();
+
+	end = (*this).Size()-1;
+
+	while(begin<=end){
+		mid = (begin+end)/2;
+		if ((*this)[mid].name == nameArg){
+			return (*this)[mid];
+		}
+		else {
+			midStr = (*this)[mid].name.c_str();
+			if (strcmp(midStr, tempStr)>0){
+				end = mid - 1;
+				continue;
+			}
+			else {
+				begin = mid+1;
+				continue;
+			}
+		}
+	}
+
+	g_SearchFail.name = "SEARCH_FAIL";
+	g_SearchFail.number = -1;
+	NODE &ret = g_SearchFail;
 	return ret;
 }

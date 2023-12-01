@@ -2,6 +2,7 @@
 #define __COMMON_HEADER__
 
 #include <iostream>
+#include <stdexcept>
 #include <algorithm>
 #include <vector>
 #include <string>
