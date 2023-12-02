@@ -2,11 +2,12 @@
 #define __COMMON_HEADER__
 
 #include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
-#include <vector>
-#include <string>
 
 #define COUT std::cout<<"["<<__func__<<", "<<__LINE__<<"]"
 #define COUT_ERROR std::cout<<"\x1b[31m"<<"["<<__func__<<", "<<__LINE__<<"]"

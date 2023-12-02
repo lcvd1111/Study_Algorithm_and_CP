@@ -27,6 +27,7 @@ public:
 	NODE &operator[](int);
 	void Print(void);
 	LIST *AddRandom(void);
+	LIST *AddRandom(int);
 	LIST *ChangeRandomElement(std::string &, int);
 	LIST *Sort(void);
 	NODE &Search(std::string &);
