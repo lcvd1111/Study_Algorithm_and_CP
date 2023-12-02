@@ -59,7 +59,7 @@ int UnitTest_BinarySearch(void)
 		return -3;
 	}
 
-	testList.Print(&testList);
+	//testList.Print(&testList);
 	LIST_DESTRUCTOR(&testList);
 	return 0;
 }
