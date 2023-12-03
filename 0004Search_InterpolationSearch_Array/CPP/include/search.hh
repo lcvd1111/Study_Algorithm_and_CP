@@ -5,16 +5,19 @@
 
 //Type Definitions and Declarations
 class NODE {
+public:
 	std::string name;
 	int number;
 
 	//Method Functions
 	NODE(void);
+	NODE(std::string);
 	~NODE(void);
 	NODE *Random(void);
 };
 
 class ARRAY{
+public:
 	std::vector<NODE> nodeVector;
 
 	//Method Functions
@@ -26,6 +29,7 @@ class ARRAY{
 	ARRAY *AddRandom(int);
 	ARRAY *ChangeRandomElement(std::string &, int);
 	ARRAY *Sort(void);
+	void Print(void);
 	NODE &Search(int);
 };
 
