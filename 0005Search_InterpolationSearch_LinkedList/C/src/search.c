@@ -329,7 +329,7 @@ NODE *LIST_METHOD_Search(LIST *this, int numArg)
 			endNode = endNode->next;
 		}
 
-		if (midIndex == beginIndex + (endIndex-beginIndex)*(numArg-(beginNode->number))/((endNode->number) - (beginNode->number))){
+		if (numArg < beginNode->number || numArg > endNode->number){
 			return NULL;
 		}
 
@@ -344,11 +344,11 @@ NODE *LIST_METHOD_Search(LIST *this, int numArg)
 			return midNode;
 		}
 		else if (midNode->number > numArg){
-			endIndex = midIndex;
+			endIndex = midIndex-1;
 			continue;
 		}
 		else if (midNode->number < numArg){
-			beginIndex = midIndex;
+			beginIndex = midIndex+1;
 			continue;
 		}
 	}

@@ -21,7 +21,7 @@ int UnitTest_InterpolationSearch(void)
 {
 	std::string testString = "lcvd1111";
 	ARRAY testArray;
-	testArray.AddRandom(10000);
+	testArray.AddRandom(100);
 	testArray.ChangeRandomElement(testString, 777);
 	testArray.Sort();
 

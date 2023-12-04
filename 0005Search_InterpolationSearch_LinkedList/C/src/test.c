@@ -30,7 +30,7 @@ int UnitTest_InterpolationSearch(void)
 	LIST_CONSTRUCTOR(&testList);
 	NODE *searchOut = NULL;
 
-	for (int i=0 ; i<100000 ; i++){
+	for (int i=0 ; i<10000 ; i++){
 		testList.AddRandom(&testList);
 	}
 	testList.ChangeRandomElement(&testList, "lcvd1111", 777);
@@ -44,8 +44,6 @@ int UnitTest_InterpolationSearch(void)
 		printf(COLOR_CYAN "%s, %d\n", searchOut->name, searchOut->number);
 		return -1;
 	}
-
-	return 0;
 
 	if (strcmp(searchOut->name, "lcvd1111") != 0){
 		UNIT_TEST_FAIL;

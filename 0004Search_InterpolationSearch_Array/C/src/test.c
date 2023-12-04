@@ -28,10 +28,11 @@ int UnitTest_InterpolationSearch(void)
 	ARRAY_CONSTRUCTOR(&testArray, 100);
 	NODE *searchResult = NULL;
 
-
 	testArray.FillRandom(&testArray);
 	testArray.ChangeRandomElement(&testArray, "lcvd1111", 777);
 	testArray.Sort(&testArray);
+
+	testArray.Print(&testArray);
 
 	searchResult = testArray.Search(&testArray, 777);
 

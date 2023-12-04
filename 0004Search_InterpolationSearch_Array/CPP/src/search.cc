@@ -38,7 +38,7 @@ NODE *NODE::Random(void)
 	}
 	this->number = rand()%10000;
 	if (this->number == 777){
-		this->number += 1;
+		this->number = rand()%10000;
 	}
 
 	return this;
@@ -147,6 +147,10 @@ NODE &ARRAY::Search(int numArg)
 	}
 
 	while(beginIndex <= endIndex){
+		if (numArg < (*this)[beginIndex].number || numArg > (*this)[endIndex].number){
+			return gSearchFail;
+		}
+
 		midIndex = beginIndex + (endIndex-beginIndex)*(numArg-(*this)[beginIndex].number)/((*this)[endIndex].number-(*this)[beginIndex].number);
 
 		if ((*this)[midIndex].number == numArg){

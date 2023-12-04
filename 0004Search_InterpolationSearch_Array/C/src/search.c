@@ -219,6 +219,11 @@ NODE *ARRAY_METHOD_Search(ARRAY *this, int numArg)
 	}
 
 	while(beginIndex <= endIndex){
+
+		if (numArg < pNodeArray[beginIndex].number || numArg > pNodeArray[endIndex].number){
+			return NULL;
+		}
+
 		midIndex = beginIndex
 					+ (endIndex-beginIndex)
 					* (numArg-pNodeArray[beginIndex].number)
@@ -228,11 +233,11 @@ NODE *ARRAY_METHOD_Search(ARRAY *this, int numArg)
 			return pNodeArray + midIndex;
 		}
 		else if (numArg < pNodeArray[midIndex].number){
-			endIndex = midIndex - 1;
+			endIndex = midIndex-1;
 			continue;
 		}
 		else if (numArg > pNodeArray[midIndex].number){
-			beginIndex = midIndex + 1;
+			beginIndex = midIndex+1;
 			continue;
 		}
 	}
