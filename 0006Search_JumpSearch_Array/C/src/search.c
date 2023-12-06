@@ -274,17 +274,19 @@ NODE *ARRAY_METHOD_Search(ARRAY *this, char *nameArg)
 	//Jump
 	while(1){
 		if (strcmp(temp->name, nameArg) == 0){
-			return temp;
+			return temp; //Search Success
 		}
 
 		if (strcmp(temp->name, nameArg) > 0){
-			break;
+			break; //The element that is being searched is already passed away during the jumping.
 		}
 
 		index += stepSize;
 		if (index >= this->size){
+			//When the index overs the range during the jumbing.
 			index -= stepSize;
 			for (int i=0 ; i<(this->size-1)-index ; i++){
+				//Checking the last block
 				if (strcmp(temp->name, nameArg) == 0){
 					return temp; //Node which is being searched is in the last block.
 				}
@@ -295,6 +297,7 @@ NODE *ARRAY_METHOD_Search(ARRAY *this, char *nameArg)
 			return NULL; //Search Fail.
 		}
 		else {
+			//jumping
 			temp = temp + stepSize;
 		}
 	}
