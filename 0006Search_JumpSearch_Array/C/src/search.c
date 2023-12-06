@@ -210,7 +210,106 @@ ARRAY *ARRAY_METHOD_Sort(ARRAY *this)
 	return this;
 }
 
+int FindSqrt(int arg)
+{
+	unsigned long long int long_arg = (unsigned long long int)arg;
+	unsigned long long int begin=0, end=0, mid=0;
+
+	if (arg == 0){
+		PRINTF_ERROR("ERROR: 'arg' is zero.\n");
+		return -1;
+	}
+
+	if (arg >=1 && arg <= 3){
+		return 1;
+	}
+
+	end = arg/2;
+
+	while(begin <= end){
+		mid = (begin+end)/2;
+		if (mid * mid == arg){
+			return mid;
+		}
+		if (mid * mid > arg){
+			end = mid-1;
+			continue;
+		}
+		if (mid * mid < arg){
+			begin = mid+1;
+			continue;
+		}
+	}
+
+	if (mid*mid > arg){
+		mid--;
+	}
+
+	return (int)mid;
+}
+
 NODE *ARRAY_METHOD_Search(ARRAY *this, char *nameArg)
 {
-	return NULL;
+	NODE *temp = NULL;
+	int stepSize = 0;
+	int index = 0;
+
+	//Exception Handling
+	if (this == NULL){
+		PRINTF("ERROR: 'this' is NULL.\n");
+		return NULL;
+	}
+
+	//Exception Handling
+	if (this->nodeArray == NULL){
+		PRINTF("ERROR: 'this->nodeArray' is NULL.\n");
+		return NULL;
+	}
+
+	(*this).Sort(this);
+	stepSize = FindSqrt(this->size);
+	index = 0;
+	temp = (this->nodeArray);
+
+	//Jump
+	while(1){
+		if (strcmp(temp->name, nameArg) == 0){
+			return temp;
+		}
+
+		if (strcmp(temp->name, nameArg) > 0){
+			break;
+		}
+
+		index += stepSize;
+		if (index >= this->size){
+			index -= stepSize;
+			for (int i=0 ; i<(this->size-1)-index ; i++){
+				if (strcmp(temp->name, nameArg) == 0){
+					return temp; //Node which is being searched is in the last block.
+				}
+				else {
+					temp = temp + 1;
+				}
+			}
+			return NULL; //Search Fail.
+		}
+		else {
+			temp = temp + stepSize;
+		}
+	}
+
+	//Step back
+	if (index == 0){
+		return NULL; //Search Fail.
+	}
+
+	for (int i=0 ; i<stepSize-1 ; i++){
+		temp = temp - 1;
+		if (strcmp(temp->name, nameArg) == 0){
+			return temp;
+		}
+	}
+
+	return NULL; //Search Fail.
 }

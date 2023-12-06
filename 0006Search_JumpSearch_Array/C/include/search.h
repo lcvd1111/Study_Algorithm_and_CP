@@ -42,5 +42,6 @@ ARRAY *ARRAY_METHOD_ChangeRandomElement(ARRAY *, char *, int);
 void ARRAY_METHOD_Print(ARRAY *);
 ARRAY *ARRAY_METHOD_Sort(ARRAY *);
 NODE *ARRAY_METHOD_Search(ARRAY *, char *);
+int FindSqrt(int arg);
 
 #endif
