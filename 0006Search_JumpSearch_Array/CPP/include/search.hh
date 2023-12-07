@@ -35,4 +35,6 @@ public:
 	void Print(void);
 };
 
+//Function Declarations
+int FindSqrt(int );
 #endif

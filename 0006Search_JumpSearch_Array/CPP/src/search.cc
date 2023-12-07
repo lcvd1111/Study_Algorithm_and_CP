@@ -2,8 +2,8 @@
 
 std::string strOutIndex("OUT_OF_INDEX");
 std::string strSearchFail("SEARCH_FAIL");
-NODE gOutIndex;
-NODE gSearchFail;
+NODE gOutIndex(strOutIndex);
+NODE gSearchFail(strSearchFail);
 static const char letterCollection[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890";
 
 NODE::NODE(void)
@@ -134,8 +134,102 @@ ARRAY *ARRAY::Sort(void)
 	return this;
 }
 
+int FindSqrt(int arg)
+{
+	unsigned long long int begin=0, end=0, mid=0;
+	unsigned long long int longArg = (unsigned long long int)arg;
+
+	end = arg/2;
+	while(begin <= end){
+		mid = (begin+end)/2;
+		if (mid*mid == arg){
+			return mid;
+		}
+		else if (mid*mid > arg){
+			end = mid - 1;
+			continue;
+		}
+		else if (mid*mid < arg){
+			begin = mid + 1;
+			continue;
+		}
+	}
+	if (mid*mid > arg){
+		mid -- ;
+	}
+
+	return mid;
+}
+
 NODE &ARRAY::Search(std::string &nameArg)
 {
+	int index = 0;
+	std::vector<NODE>::iterator temp;
+	int stepSize = 0;
+	int cmpResult = 0;
+
+	//Exception Handling
+	if ((*this).Size() == 0){
+		return gSearchFail;
+	}
+
+	index = 0;
+	temp = (*this).nodeVector.begin();
+	stepSize = FindSqrt((*this).Size());
+
+	//Jumping
+	while(1){
+		cmpResult = strcmp((temp->name).c_str(), nameArg.c_str());
+		if (cmpResult == 0){
+			return *temp;
+		}
+		else if (cmpResult > 0){
+			if (index == 0){
+				return gSearchFail;
+			}
+			break;//Jump Ends.
+		}
+		else if (cmpResult < 0){
+			if (index+stepSize >= (*this).Size()){
+				//When you can't do jump anymore.
+				for (int i=0 ; i<(*this).Size()-index-1 ; i++){
+					temp = temp + 1;
+					cmpResult = strcmp((temp->name).c_str(), nameArg.c_str());
+					if (cmpResult == 0){
+						return *temp;
+					}
+					else if (cmpResult < 0){
+						temp = temp+1;
+						continue;
+					}
+					else if (cmpResult > 0){
+						return gSearchFail;
+					}
+				}
+				return gSearchFail;
+			}
+			else {
+				index = index + stepSize;
+				temp = temp + stepSize;
+				continue;
+			}
+		}
+	}
+
+	//Linear Search toward reverse direction
+	for (int i=0 ; i<stepSize-1 ; i++){
+		temp = temp-1;
+		cmpResult = strcmp((*temp).name.c_str(), nameArg.c_str());
+		if (cmpResult == 0){
+			return *temp;
+		}
+		else if (cmpResult > 0){
+			continue;
+		}
+		else if (cmpResult < 0){
+			return gSearchFail;
+		}
+	}
 
 	return gSearchFail;
 }
