@@ -26,7 +26,7 @@ int UnitTest_Search(void)
 	ARRAY testArray;
 	std::string testString = "lcvd_1111";
 
-	testArray.AddRandom(1000000);
+	testArray.AddRandom(1002000);
 	testArray.ChangeRandomElement(testString, 777);
 	testArray.Sort();
 

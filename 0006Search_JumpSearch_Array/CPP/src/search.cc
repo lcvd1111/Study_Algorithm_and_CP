@@ -47,6 +47,8 @@ ARRAY::ARRAY(void)
 {
 	srand((unsigned int)time(NULL));
 	(*this).nodeVector.clear();
+	
+	srand((unsigned int)time(NULL));
 
 	return ;
 }

@@ -27,7 +27,7 @@ int UnitTest_JumpSearch(void)
 	ARRAY testArray;
 	NODE *searchOut = NULL;
 
-	ARRAY_CONSTRUCTOR(&testArray, 1000000);
+	ARRAY_CONSTRUCTOR(&testArray, 1002000);
 
 	if (FindSqrt(testArray.size) != 1000){
 		UNIT_TEST_FAIL;
