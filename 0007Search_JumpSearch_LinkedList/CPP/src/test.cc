@@ -26,11 +26,11 @@ int UnitTest_JumpSearch(void)
 	LIST testList;
 	std::string testStr("lcvd_1111");
 
-	testList.AddRandom(1002000);
+	testList.AddRandom(9006000);
 	testList.ChangeRandomElement(testStr, 777);
 	testList.Sort();
 
-	if (FindSqrt(testList.Size()) != 1000){
+	if (FindSqrt(testList.Size()) != 3000){
 		UNIT_TEST_FAIL;
 		return -1;
 	}
