@@ -1,19 +1,18 @@
-#ifndef __HEAP_HEADER__
-#define __HEAP_HEADER__
+#ifndef __BINARY_HEAP_HEADER__
+#define __BINARY_HEAP_HEADER__
 
 #include "common.h"
 #include "node.h"
 
-//Type Definitions and Declarations
+//Type Declarations and Definitions
 typedef struct _BINARY_HEAP BINARY_HEAP;
 typedef BINARY_HEAP HEAP;
-typedef HEAP PRIORITY_QUEUE;
-typedef PRIORITY_QUEUE PQ;
+typedef HEAP PQ;
 
 struct _BINARY_HEAP {
-	NODE **nodeArray; //Element of each node has a type of 'NODE *'
-	int size;
+	NODE **heapArray; //Array whose each element's type is 'NODE *'.
 	int level;
+	int size;
 	int lastIndex;
 
 	//Method Functions

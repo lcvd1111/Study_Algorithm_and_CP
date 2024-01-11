@@ -10,21 +10,21 @@ object_%:
 	cp $< $@
 
 %.o:
-	$(COMPILE.c) $< -I $(INCLUDE_MY_DIRS) -o $@
+	$(COMPILE.c) $< -I $(INCLUDE_MY_DIRS) > $@
 
 object_main: main.o
 
-object_sub00: heap.o
+object_sub00: node.o
 
-object_sub01: array.o
+object_sub01: list.o
 
-object_sub02: test.o
+object_sub02: heap.o
 
-object_sub03: node.o
+object_sub03: test.o
 
 include Dependency.mk
 
-Dependency.mk: main.c heap.c array.c test.c node.c
+Dependency.mk: main.c node.c list.c heap.c test.c
 	$(CC) -M $^ -I $(INCLUDE_MY_DIRS) > $@
 
 .PHONY: clean cleanall
