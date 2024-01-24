@@ -30,12 +30,12 @@ int UnitTest_Sort(void)
 {
 	ARRAY testArray;
 	NODE *testArray_for_Qsort = NULL;
-	ARRAY_CONSTRUCTOR(&testArray, 10000);
+	ARRAY_CONSTRUCTOR(&testArray, 20000);
 
 	testArray.FillRandom(&testArray);
 	testArray.CopyRawArray(&testArray, &testArray_for_Qsort);
 
-	testArray.Print(&testArray);
+	//testArray.Print(&testArray);
 	
 	testArray.Sort(&testArray);
 	qsort(testArray_for_Qsort, testArray.size, sizeof(NODE), &CompareFunc);
@@ -46,7 +46,7 @@ int UnitTest_Sort(void)
 		}
 	}
 
-	testArray.Print(&testArray);
+	//testArray.Print(&testArray);
 
 	ARRAY_DESTRUCTOR(&testArray);
 	free(testArray_for_Qsort);
