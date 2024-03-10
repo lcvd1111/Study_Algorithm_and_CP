@@ -12,6 +12,17 @@ int UnitTest_Array(void)
 
 int UnitTest_Sort(void)
 {
+	ARRAY testArray;
+	ARRAY_METHOD_CONSTRUCTOR(&testArray, 4);
+
+	testArray.Fill_Random(&testArray);
+	testArray.Print(&testArray);
+
+	testArray.Sort(&testArray);
+	printf("\n");
+	testArray.Print(&testArray);
+
+	ARRAY_METHOD_DESTRUCTOR(&testArray);
 	return 0;
 }
 
