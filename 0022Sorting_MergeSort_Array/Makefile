@@ -3,7 +3,7 @@ vpath %.h ./include
 
 INCLUDE_MY_DIRS = ./include
 
-EXE: object_main object_array object_test
+EXE: object_main object_array object_stack object_test
 	$(CC) $^ -o $@
 
 object_%:
@@ -16,11 +16,13 @@ object_main: main.o
 
 object_array: array.o
 
+object_stack: stack.o
+
 object_test: test.o
 
 include Dependency.mk
 
-Dependency.mk: main.c array.c test.c
+Dependency.mk: main.c array.c stack.c test.c
 	$(CC) -M $^ -I $(INCLUDE_MY_DIRS) > $@
 
 .PHONY: clean cleanall

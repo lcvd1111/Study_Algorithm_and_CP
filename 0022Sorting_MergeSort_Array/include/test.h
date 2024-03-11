@@ -6,6 +6,7 @@
 
 int UnitTest_Array(void);
 int UnitTest_Sort(void);
+int UnitTest_Sort_Iterative(void);
 int UnitTest(void);
 
 #endif

@@ -1,4 +1,5 @@
 #include "array.h"
+#include "stack.h"
 
 static const char letterCollection[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -84,7 +85,7 @@ void ARRAY_METHOD_CONSTRUCTOR(ARRAY *this, int sizeArg)
 	this->Print = &ARRAY_METHOD_Print;
 	this->Copy_to_Raw_Array = &ARRAY_METHOD_Copy_to_Raw_Array;
 	this->Sort = &ARRAY_METHOD_Sort;
-
+	this->Sort2 = &ARRAY_METHOD_Sort_Iterative;
 
 	srand((unsigned int)time(NULL));
 
@@ -142,7 +143,7 @@ void ARRAY_METHOD_Print(ARRAY *this)
 	return ;
 }
 
-ARRAY *ARRAY_METHOD_Copy_to_Raw_Array(ARRAY *this, NODE **dest)
+ARRAY *ARRAY_METHOD_Copy_to_Raw_Array(ARRAY *this, NODE *dest)
 {
 	//Exception Handling
 	if (this == NULL){
@@ -168,22 +169,18 @@ int MergeFunc(ARRAY *this,
 	int index_A = 0, index_B = 0, index_Res = 0;
 	int length = (end_A - begin_A + 1) + (end_B - begin_B + 1);
 
-	//PRINTF("JYJO DEBUG\n");
-
 	//Exception Handling
-	if (end_A+1 != begin_B){
-		PRINTF_ERROR("ERROR: Unexpected situation occured.\n");
-		return -1;
-	}
+	assert(end_A+1 == begin_B);
 	
 	NODE *given_Arr = this->nodeArray;
-	NODE *temp_Res = (NODE *)malloc(sizeof(NODE)*length);
+
+	NODE *temp_Res = (NODE *)malloc(sizeof(NODE)*(length)); //Temporary result array
 
 	int cmpResult = 0;
 
 	for(index_Res = 0 ; index_Res < length ; index_Res++){
-		cmpResult = strcmp(given_Arr[index_A].name
-							,given_Arr[index_B].name);
+		cmpResult = strcmp(given_Arr[begin_A + index_A].name
+							,given_Arr[begin_B + index_B].name);
 
 		if (cmpResult > 0){
 			memcpy(temp_Res + index_Res
@@ -191,15 +188,15 @@ int MergeFunc(ARRAY *this,
 					, sizeof(NODE));
 			index_B ++;
 
-			if (index_B > end_B){
+			if (begin_B + index_B > end_B){
 				index_Res++;
 				memcpy(temp_Res + index_Res
 						, given_Arr + begin_A + index_A
-						, sizeof(NODE) * (end_A - index_A + 1));
-				memcpy(given_Arr + index_A
-						, temp_Res, sizeof(NODE)*length);
-				free(temp_Res);
-				return 0;
+						, sizeof(NODE) * (end_A - (begin_A + index_A) + 1));
+				memcpy(given_Arr + begin_A
+						, temp_Res
+						, sizeof(NODE)*length);
+				break;
 			}
 			else {
 				continue;
@@ -211,16 +208,15 @@ int MergeFunc(ARRAY *this,
 				, sizeof(NODE));
 		index_A ++;
 
-		if (index_A > end_A){
+		if (begin_A + index_A > end_A){
 			index_Res++;
 			memcpy(temp_Res + index_Res
-					, given_Arr + begin_A + index_A
-					, sizeof(NODE) * (end_A - index_A + 1));
-			memcpy(given_Arr + index_A
+					, given_Arr + begin_B + index_B
+					, sizeof(NODE) * (end_B - (begin_B + index_B) + 1));
+			memcpy(given_Arr + begin_A
 					, temp_Res
 					, sizeof(NODE)*length);
-			free(temp_Res);
-			return 0;
+			break;
 		}
 		else {
 			continue;
@@ -228,6 +224,7 @@ int MergeFunc(ARRAY *this,
 	}
 
 	free(temp_Res);
+
 	return 0;
 }
 
@@ -236,6 +233,8 @@ int DFS_Recursive(ARRAY *this, int begin_Index, int end_Index)
 	//Binary Tree Recursive DFS traversal function for Merge Sorting.
 
 	int middle_Num = 0;
+
+	//printf("Visited Node: (%d, %d)\n", begin_Index, end_Index);
 
 	if (begin_Index == end_Index){
 		return 0;
@@ -277,5 +276,10 @@ ARRAY *ARRAY_METHOD_Sort(ARRAY *this)
 		return NULL;
 	}
 
+	return this;
+}
+
+ARRAY *ARRAY_METHOD_Sort_Iterative(ARRAY *this)
+{
 	return this;
 }

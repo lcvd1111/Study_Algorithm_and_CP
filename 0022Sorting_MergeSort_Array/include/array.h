@@ -24,8 +24,9 @@ struct _ARRAY {
 	//Member Functions
 	ARRAY *(*Fill_Random)(ARRAY *);
 	void (*Print)(ARRAY *);
-	ARRAY *(*Copy_to_Raw_Array)(ARRAY *, NODE **);
+	ARRAY *(*Copy_to_Raw_Array)(ARRAY *, NODE *);
 	ARRAY *(*Sort)(ARRAY *);
+	ARRAY *(*Sort2)(ARRAY *);
 };
 
 //Declaration for Member Functions of struct _NODE
@@ -38,7 +39,8 @@ void ARRAY_METHOD_CONSTRUCTOR(ARRAY *, int);
 void ARRAY_METHOD_DESTRUCTOR(ARRAY *);
 ARRAY *ARRAY_METHOD_Fill_Random(ARRAY *);
 void ARRAY_METHOD_Print(ARRAY *);
-ARRAY *ARRAY_METHOD_Copy_to_Raw_Array(ARRAY *, NODE **);
+ARRAY *ARRAY_METHOD_Copy_to_Raw_Array(ARRAY *, NODE *);
 ARRAY *ARRAY_METHOD_Sort(ARRAY *);
+ARRAY *ARRAY_METHOD_Sort_Iterative(ARRAY *);
 
 #endif

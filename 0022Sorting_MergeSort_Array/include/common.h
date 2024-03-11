@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <assert.h>
 
 #define PRINTF( x , ... ) printf("[%s, %d]" x, __func__, __LINE__, ##__VA_ARGS__)
 #define PRINTF_ERROR( x , ... ) printf("\x1b[31m[%s, %d]" x "\x1b[30m", __func__, __LINE__, ##__VA_ARGS__)

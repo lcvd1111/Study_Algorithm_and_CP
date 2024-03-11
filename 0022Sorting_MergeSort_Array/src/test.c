@@ -1,4 +1,5 @@
 #include "test.h"
+#define TEST_SIZE 1000
 
 int UnitTest_Array(void)
 {
@@ -10,19 +11,35 @@ int UnitTest_Array(void)
 	return 0;
 }
 
+int CustomCompare(const void *prev, const void *rear)
+{
+	int cmpResult = strcmp(((NODE *)prev)->name, ((NODE *)rear)->name);
+	return cmpResult;
+}
+
 int UnitTest_Sort(void)
 {
+	NODE rawArray[TEST_SIZE];
 	ARRAY testArray;
-	ARRAY_METHOD_CONSTRUCTOR(&testArray, 4);
+	ARRAY_METHOD_CONSTRUCTOR(&testArray, TEST_SIZE);
 
 	testArray.Fill_Random(&testArray);
-	testArray.Print(&testArray);
+	testArray.Copy_to_Raw_Array(&testArray, rawArray);
 
 	testArray.Sort(&testArray);
-	printf("\n");
-	testArray.Print(&testArray);
+	qsort(rawArray, TEST_SIZE, sizeof(NODE), CustomCompare);
+
+	for (int i=0 ; i<TEST_SIZE ; i++){
+		if (strcmp(rawArray[i].name, (testArray.nodeArray)[i].name))
+			return (-1)*(i);
+	}
 
 	ARRAY_METHOD_DESTRUCTOR(&testArray);
+	return 0;
+}
+
+int UnitTest_Sort_Iterative(void)
+{
 	return 0;
 }
 
