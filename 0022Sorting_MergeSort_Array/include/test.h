@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "array.h"
+#include "stack.h"
 
 int UnitTest_Array(void);
 int UnitTest_Sort(void);

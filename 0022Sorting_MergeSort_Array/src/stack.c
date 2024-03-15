@@ -136,3 +136,4 @@ int STACK_METHOD_Size(STACK *this)
 
 	return (this->size);
 }
+

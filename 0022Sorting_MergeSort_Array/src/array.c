@@ -281,5 +281,63 @@ ARRAY *ARRAY_METHOD_Sort(ARRAY *this)
 
 ARRAY *ARRAY_METHOD_Sort_Iterative(ARRAY *this)
 {
+	int beginIndex=0, endIndex=0;
+	STACK dfsStack;
+	STACK_METHOD_CONSTRUCTOR(&dfsStack);
+	STACK_NODE tempStackNode;
+	int loopCtl = 0;
+
+	//Exception Handling
+	if (this == NULL)
+	{
+		PRINTF_ERROR("ERROR: 'this' is NULL.\n");
+		return NULL;
+	}
+
+	endIndex = this->size - 1;
+
+	loopCtl = 1;
+	while(loopCtl){
+		if (beginIndex != endIndex){
+			tempStackNode.begin_Index = beginIndex;
+			tempStackNode.end_Index = endIndex;
+			tempStackNode.status = 1;
+			dfsStack.Push(&dfsStack, &tempStackNode);
+
+			endIndex = (beginIndex + endIndex)/2;
+			continue;
+		}
+		
+		assert(beginIndex == endIndex);
+
+		while(1){
+			if (dfsStack.Size(&dfsStack) == 0){
+				loopCtl = 0;
+				break;
+			}
+
+			dfsStack.Pop(&dfsStack, &tempStackNode);
+			beginIndex = tempStackNode.begin_Index;
+			endIndex = tempStackNode.end_Index;
+
+			if (tempStackNode.status == 1){
+				tempStackNode.status = 2;
+				dfsStack.Push(&dfsStack, &tempStackNode);
+				beginIndex = (beginIndex + endIndex)/2 + 1;
+				break;
+			}
+			else if (tempStackNode.status == 2){
+				MergeFunc(this, beginIndex, (beginIndex+endIndex)/2, (beginIndex+endIndex)/2 + 1, endIndex);
+			}
+			else {
+				PRINTF_ERROR("ERROR: Unexpected situation occured.\n");
+				return NULL;
+			}
+		}
+	}
+
+	STACK_METHOD_DESTRUCTOR(&dfsStack);
+
 	return this;
 }
+
