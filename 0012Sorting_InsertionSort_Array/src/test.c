@@ -53,7 +53,7 @@ int UnitTest_InsertionSort(void)
 
 	for (int i=0 ; i<testArray.Size(&testArray) ; i++){
 		if ( strcmp((testArray.nodeArray)[i].name, testArray_For_Qsort[i].name)){
-			return (-1)*(i);
+			return -1;
 		}
 	}
 

@@ -49,7 +49,7 @@ int UnitTest_SelectionSort(void)
 
 	for (int i=0 ; i<1000 ; i++){
 		if (strcmp(testArray_for_Qsort[i].name, testArray.nodeArray[i].name) != 0){
-			return (-1)*(i);
+			return -1;
 		}
 	}
 

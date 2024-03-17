@@ -42,7 +42,7 @@ int UnitTest_Sort(void)
 
 	for (int i=0 ; i<testArray.size ; i++){
 		if (strcmp(testArray.nodeArray[i].name, testArray_for_Qsort[i].name)){
-			return (-1)*(i);
+			return -1;
 		}
 	}
 

@@ -37,7 +37,7 @@ int UnitTest_Sort(void)
 	for (int i=0 ; i<TEST_SIZE ; i++){
 		if (strcmp(testArray[i].name, temp->name)){
 			PRINTF_ERROR("UNIT TEST FAILED.\n");
-			return (-1)*(i);
+			return -1;
 		}
 		temp = temp->next;
 	}

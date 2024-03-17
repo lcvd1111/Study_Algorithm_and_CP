@@ -110,7 +110,7 @@ int UnitTest_HeapSort(void)
 
 	for (int i=0 ; i<testSize ; i++){
 		if (strcmp(testArray.nodeArray[i].name, testArray_qsort[i].name)){
-			return (-1)*(i);
+			return -1;
 		}
 	}
 

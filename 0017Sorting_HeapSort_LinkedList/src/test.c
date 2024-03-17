@@ -114,7 +114,7 @@ int UnitTest_HeapSort(void)
 
 	for (int i=0 ; i<testList.size ; i++){
 		if(strcmp(testArray_qsort[i].name, temp->name)){
-			return (-1)*(i);
+			return -1;
 		}
 		temp = temp->next;
 	}

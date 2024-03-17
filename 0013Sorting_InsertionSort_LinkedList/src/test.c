@@ -61,7 +61,7 @@ int UnitTest_InsertionSort(void)
 	for (int i=0; i<(testList.size) ; i++){
 		if (strcmp((testArray+i)->name, traversalNode->name)){
 			printf("Name1: %s, Name2: %s\n", (testArray+i)->name, traversalNode->name);
-			return (-1)*(i);
+			return -1;
 		}
 		traversalNode = traversalNode -> next;
 	}

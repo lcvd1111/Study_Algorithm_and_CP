@@ -60,7 +60,7 @@ int UnitTest_ShellSort(void)
 	temp = testList.begin;
 	for (int i=0 ; i<testList.size ; i++){
 		if (strcmp(temp->name, testArray_For_qsort[i].name) != 0){
-			return (-1)*(i);
+			return -1;
 		}
 		temp = temp->next;
 	}

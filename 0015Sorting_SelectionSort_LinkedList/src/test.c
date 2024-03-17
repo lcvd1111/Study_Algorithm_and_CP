@@ -57,7 +57,7 @@ int UnitTest_SelectionSort(void)
 	tempNode = testList.begin;
 	for (int i=0 ; i<testSize ; i++){
 		if (strcmp(tempNode->name, testArray[i].name)){
-			return (-1)*(i);
+			return -1;
 		}
 		tempNode = tempNode->next;
 	}

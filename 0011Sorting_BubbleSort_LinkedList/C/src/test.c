@@ -53,7 +53,7 @@ int UnitTest_BubbleSort(void)
 	for (int i=0 ; i<testList.size ; i++){
 		if (strcmp(temp->name, testArray[i].name) != 0){
 			UNIT_TEST_FAIL;
-			return (-1)*(i);
+			return -1;
 		}
 		temp = temp->next;
 	}

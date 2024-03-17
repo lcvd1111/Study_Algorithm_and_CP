@@ -134,11 +134,10 @@ int UnitTest_Sort_Iterative(void)
 	testArray.Copy_to_Raw_Array(&testArray, rawArray);
 
 	testArray.Sort2(&testArray);
-	//testArray.Print(&testArray);
 	qsort(rawArray, TEST_SIZE, sizeof(NODE), CustomCompare);
 
 	for (int i=0 ; i<TEST_SIZE ; i++){
-		if (strcmp(rawArray[i].name, (testArray.nodeArray)[i].name))
+		if (strcmp(rawArray[i].name, (testArray.nodeArray)[i].name) != 0)
 			return -1;
 	}
 
