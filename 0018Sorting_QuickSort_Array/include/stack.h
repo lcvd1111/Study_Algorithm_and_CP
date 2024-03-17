@@ -8,7 +8,7 @@ typedef struct _STACK_NODE STACK_NODE;
 typedef struct _STACK STACK;
 
 struct _STACK_NODE {
-	int begin_Index, end_Index;
+	int begin_Index, end_Index, pivot_Index;
 	int status;
 	STACK_NODE *prev, *next;
 };

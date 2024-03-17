@@ -250,6 +250,44 @@ ARRAY *ARRAY_METHOD_Sort(ARRAY *this)
 
 ARRAY *ARRAY_METHOD_Sort_Iterative(ARRAY *this)
 {
+	int beginIndex = 0, endIndex = this->size - 1, pivotIndex = 0;
+	STACK dfsStack;
+	STACK_METHOD_CONSTRUCTOR(&dfsStack);
+	STACK_NODE tempNode;
+
+	while(1){
+		if (endIndex-beginIndex >= 1){
+			pivotIndex = Partition(this, beginIndex, endIndex);
+
+			tempNode.begin_Index = beginIndex;
+			tempNode.end_Index = endIndex;
+			tempNode.pivot_Index = pivotIndex;
+			dfsStack.Push(&dfsStack, &tempNode);
+
+			//Moving to Left Child Node.
+			endIndex = pivotIndex-1;
+			continue;
+		}
+
+		assert(endIndex-beginIndex < 1);
+
+		if (dfsStack.Size(&dfsStack) == 0){
+			assert(dfsStack.begin == NULL && dfsStack.end == NULL);
+			break;
+		}
+
+		//Backtracking
+		dfsStack.Pop(&dfsStack, &tempNode);
+		beginIndex = tempNode.begin_Index;
+		endIndex = tempNode.end_Index;
+		pivotIndex = tempNode.pivot_Index;
+
+		//Moving to Right Child Node.
+		beginIndex = pivotIndex+1;
+		continue;
+	}
+
+	STACK_METHOD_DESTRUCTOR(&dfsStack);
+
 	return this;
 }
-

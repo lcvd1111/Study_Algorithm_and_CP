@@ -68,6 +68,7 @@ STACK *STACK_METHOD_Push(STACK *this, STACK_NODE *inputArg)
 		this->size += 1;
 		this->end->begin_Index = inputArg->begin_Index;
 		this->end->end_Index = inputArg->end_Index;
+		this->end->pivot_Index = inputArg->pivot_Index;
 		this->end->status = inputArg->status;
 		this->end->prev = this->end->next = NULL;
 
@@ -81,6 +82,7 @@ STACK *STACK_METHOD_Push(STACK *this, STACK_NODE *inputArg)
 	this->end = this->end->next;
 	this->end->begin_Index = inputArg->begin_Index;
 	this->end->end_Index = inputArg->end_Index;
+	this->end->pivot_Index = inputArg->pivot_Index;
 	this->end->status = inputArg->status;
 	this->size += 1;
 
