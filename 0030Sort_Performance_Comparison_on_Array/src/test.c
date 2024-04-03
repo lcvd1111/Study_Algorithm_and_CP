@@ -1,6 +1,6 @@
 #include "test.h"
 #define TEST_SIZE 1000
-#define TEST_SIZE2 10000
+#define TEST_SIZE2 5000
 
 typedef struct _SORT_COMPARE_NODE SORT_COMPARE_NODE;
 struct _SORT_COMPARE_NODE {
@@ -258,11 +258,6 @@ int UnitTest_ShellSort(void)
 	return 0;
 }
 
-int UnitTest_TimeMeasure(void)
-{
-	return 0;
-}
-
 int UnitTest(void)
 {
 	int errCode = 0;
@@ -313,14 +308,6 @@ int UnitTest(void)
 	}
 	printf(COLOR_GREEN "SUCCESS\n" COLOR_BLACK );
 
-	printf(COLOR_BLACK "Unit Test for Shell Sort on array: " COLOR_BLACK);
-	if (errCode = UnitTest_ShellSort()){
-		printf(COLOR_RED "FAIL\n" COLOR_BLACK );
-		printf(COLOR_RED "Error Code: %d\n" COLOR_BLACK, errCode);
-		return -9;
-	}
-	printf(COLOR_GREEN "SUCCESS\n" COLOR_BLACK );
-
 	printf(COLOR_BLACK "Unit Test for Heap Sort on array: " COLOR_BLACK);
 	if (errCode = UnitTest_HeapSort()){
 		printf(COLOR_RED "FAIL\n" COLOR_BLACK );
@@ -336,6 +323,15 @@ int UnitTest(void)
 		return -6;
 	}
 	printf(COLOR_GREEN "SUCCESS\n" COLOR_BLACK );
+
+	printf(COLOR_BLACK "Unit Test for Shell Sort on array: " COLOR_BLACK);
+	if (errCode = UnitTest_ShellSort()){
+		printf(COLOR_RED "FAIL\n" COLOR_BLACK );
+		printf(COLOR_RED "Error Code: %d\n" COLOR_BLACK, errCode);
+		return -9;
+	}
+	printf(COLOR_GREEN "SUCCESS\n" COLOR_BLACK );
+	printf("\n");
 
 	return 0;
 }
@@ -421,6 +417,8 @@ int Sort_Comparison(void)
 	for (int i=0 ; i<8 ; i++){
 		ARRAY_METHOD_DESTRUCTOR(testArrays+i);
 	}
+
+	printf("\n");
 
 	return 0;
 }

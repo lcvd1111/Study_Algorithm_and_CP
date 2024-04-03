@@ -1,5 +1,5 @@
 #include "test.h"
-//#define UNIT_TEST_ON
+#define UNIT_TEST_ON
 
 int main(void)
 {

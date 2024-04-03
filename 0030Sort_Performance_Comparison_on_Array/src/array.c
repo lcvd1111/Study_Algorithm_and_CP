@@ -1,6 +1,10 @@
 #include "array.h"
 #include "bst.h"
 
+static const int stepSizeList[] = {1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 
+									4095, 8191, 16383, 32767, 65535, 131071, 262143,
+									524287, 1048575, 2097151, 4194303, 8388607,
+									16777215, 33554431, 67108863};
 static const char letterCollection[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 static NODE_METHOD gNodeMethod = { .Random = &NODE_METHOD_Random };
 
@@ -330,11 +334,93 @@ ARRAY *ARRAY_METHOD_Sort_Selection(ARRAY *this)
 
 ARRAY *ARRAY_METHOD_Sort_Heap(ARRAY *this)
 {
+	int properLevel = 0;
+	int properSize = 0;
+	HEAP sortingHeap;
+	HEAP_NODE bufferHeapNode;
+
+	properSize = 1;
+	for (properLevel=1 ; properSize <= (this->size) ; properLevel++){
+		properSize = properSize*2;
+	}
+
+	HEAP_METHOD_CONSTRUCTOR(&sortingHeap, properLevel);
+
+	for (int i=0 ; i<this->size ; i++){
+		((sortingHeap.Method)->Enqueue)(&sortingHeap, (this->nodeArray)[i].name, (this->nodeArray)[i].number);
+	}
+
+	assert(sortingHeap.currentLastIndex == (this->size - 1));
+
+	for (int i=0 ; i<this->size ; i++){
+		((sortingHeap.Method)->Dequeue)(&sortingHeap, &bufferHeapNode);
+		memcpy((this->nodeArray)[i].name, bufferHeapNode.name, NAME_LEN);
+		(this->nodeArray)[i].number = bufferHeapNode.number;
+	}
+
+	assert(sortingHeap.currentLastIndex == -1);
+
+	HEAP_METHOD_DESTRUCTOR(&sortingHeap);
 	return this;
+}
+
+int DFS_InorderTraversal_Sort(ARRAY *this, BST *inputBST, BST_NODE *inputBSTNode)
+{
+	BST_NODE *tempNode = NULL;
+
+	//Exception Handling
+	if (inputBSTNode == NULL){
+		PRINTF_ERROR("ERROR: 'inputBSTNode' is NULL.\n");
+		return -1;
+	}
+
+	if (inputBSTNode->leftChild != NULL){
+		DFS_InorderTraversal_Sort(this, inputBST, inputBSTNode->leftChild);
+	}
+
+	tempNode = inputBSTNode;
+	while (tempNode->nextFriend != NULL){
+		memcpy((this->nodeArray)[this->currentIndex].name, tempNode->key, NAME_LEN);
+		(this->nodeArray[this->currentIndex]).number = tempNode->data;
+		this->currentIndex += 1;
+		tempNode = tempNode->nextFriend;
+	}
+
+	memcpy((this->nodeArray)[this->currentIndex].name, tempNode->key, NAME_LEN);
+	(this->nodeArray[this->currentIndex]).number = tempNode->data;
+	this->currentIndex += 1;
+
+	if (inputBSTNode->rightChild != NULL){
+		DFS_InorderTraversal_Sort(this, inputBST, inputBSTNode->rightChild);
+	}
+
+	return 0;
 }
 
 ARRAY *ARRAY_METHOD_Sort_Tree(ARRAY *this)
 {
+	BST sortingBST;
+	BST_METHOD_CONSTRUCTOR(&sortingBST);
+
+	//Exception Handling
+	if (this == NULL){
+		PRINTF_ERROR("ERROR: 'this' is NULL.\n");
+		return NULL;
+	}
+	
+	for (int i=0 ; i<this->size ; i++){
+		((sortingBST.Method)->Insert)(&sortingBST, 
+									(this->nodeArray)[i].name,
+									(this->nodeArray)[i].number);
+	}
+	assert(sortingBST.size == this->size);
+
+	this->currentIndex = 0;
+	DFS_InorderTraversal_Sort(this, &sortingBST, sortingBST.root);
+	assert(this->currentIndex == this->size);
+	this->currentIndex = 0;
+
+	BST_METHOD_DESTRUCTOR(&sortingBST);
 	return this;
 }
 
@@ -502,7 +588,67 @@ ARRAY *ARRAY_METHOD_Sort_Merge(ARRAY *this)
 	return this;
 }
 
+int FindStepSizeIndex(int sizeArg)
+{
+	int ret = 0;
+
+	for (ret=0 ; stepSizeList[ret]*2<sizeArg ; ret++){
+	}
+
+	ret--;
+
+	return ret;
+}
+
 ARRAY *ARRAY_METHOD_Sort_Shell(ARRAY *this)
 {
+	int stepSize=0, stepSizeIndex=0;
+	int beginIndex = 0;
+	int sorted_LastIndex=0, current_Index=0;
+	NODE operand_For_Sorting;
+
+	//Exception Handling
+	if (this == NULL){
+		PRINTF_ERROR("ERROR: 'this' is NULL.\n");
+		return NULL;
+	}
+
+	stepSizeIndex = FindStepSizeIndex(this->size);
+
+	for ( ; stepSizeIndex >= 0 ; stepSizeIndex--){
+		stepSize = stepSizeList[stepSizeIndex];
+		for (beginIndex=0 ; beginIndex<stepSize ; beginIndex++){
+			sorted_LastIndex = beginIndex;
+			while(1){
+				if (sorted_LastIndex + stepSize >= this->size){
+					break;
+				}
+				memcpy(&operand_For_Sorting, (this->nodeArray)+sorted_LastIndex + stepSize, sizeof(NODE));
+
+				for (current_Index=sorted_LastIndex ; current_Index>=beginIndex ; current_Index -= stepSize)
+				{
+					if(strcmp((this->nodeArray)[current_Index].name, operand_For_Sorting.name) > 0){
+						memcpy(this->nodeArray+current_Index+stepSize, this->nodeArray+current_Index, sizeof(NODE));
+						if (current_Index-stepSize < 0){
+							if (current_Index != beginIndex){
+								PRINTF_ERROR("ERROR: Wrong\n");
+								PRINTF_ERROR("CurrentIndex: %d, StepSize: %d, beginIndex: %d\n",
+											current_Index, stepSize, beginIndex);
+								return NULL;
+							}
+							memcpy(this->nodeArray+current_Index, &operand_For_Sorting, sizeof(NODE));
+							break;
+						}
+					}
+					else {
+						memcpy(this->nodeArray+current_Index+stepSize, &operand_For_Sorting, sizeof(NODE));
+						break;
+					}
+				}
+				sorted_LastIndex += stepSize;
+			}
+		}
+	}
+
 	return this;
 }
