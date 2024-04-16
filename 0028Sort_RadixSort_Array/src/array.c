@@ -1,4 +1,5 @@
 #include "array.h"
+#define UNIT_TEST_ARRAY
 
 static const char letterCollection[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 static NODE_METHOD gNodeMethod = { .Random = &NODE_METHOD_Random };
@@ -199,12 +200,12 @@ ARRAY *ARRAY_METHOD_Copy_to_Raw_Array(ARRAY *this, NODE *dest)
 	return this;
 }
 
-static int FindMaxVal(ARRAY *this)
+static int FindMaximum(ARRAY *this)
 {
 	int ret = 0;
 
 	for (int i=0 ; i<this->size ; i++){
-		if ((this->nodeArray)[i].number > ret){
+		if (ret < (this->nodeArray)[i].number){
 			ret = (this->nodeArray)[i].number;
 		}
 	}
@@ -212,39 +213,88 @@ static int FindMaxVal(ARRAY *this)
 	return ret;
 }
 
-ARRAY *ARRAY_METHOD_Sort(ARRAY *this)
+static int FindDigitsNum(int arg)
 {
-	int max = 0;
-	NODE *outputArray = (NODE *)malloc(sizeof(NODE)*(this->size));
-	int *countingArray = NULL;
+	int ret = 0;
 
-	max = FindMaxVal(this);
-
-	countingArray = (int *)malloc(sizeof(int)*(max+1));
-	memset(countingArray, 0, sizeof(int)*(max+1));
-
-	//Filling the Counting Array
-	for (int i=0 ; i<this->size ; i++){
-		countingArray[(this->nodeArray)[i].number] += 1;
+	while(arg > 0){
+		arg = arg/10;
+		ret ++;
 	}
 
-	//Calculating the cumulative sum of counting array
-	for (int i=0 ; i<max ; i++){
+	return ret;
+}
+
+static ARRAY *CountSort_Base_Ten(ARRAY *this, int base)
+{
+	int max = 0;
+	int divisor = 1;
+	int countingArray[10] = {0,};
+	NODE *outputArray = NULL;
+
+	for (int i=0 ; i<base ; i++){
+		divisor = divisor * 10;
+	}
+
+	//Finding the maximum value.
+	for (int i=0 ; i<this->size ; i++){
+		if (max < ((this->nodeArray)[i].number/divisor)%10){
+			max = ((this->nodeArray)[i].number/divisor)%10;
+		}
+	}
+
+	//Filling the countingArray.
+	for (int i=0 ; i<this->size ; i++){
+		countingArray[(((this->nodeArray)[i].number)/divisor) % 10] += 1;
+	}
+
+	//Calculating the cumulative sum of countingArray
+	for (int i=0 ; i<9 ; i++){
 		countingArray[i+1] += countingArray[i];
 	}
 
-	//Countsorting using cumulative sum of counting array.
-	for (int i=(this->size-1) ; i>=0 ; i--){
-		countingArray[(this->nodeArray)[i].number] -= 1;
-		memcpy(&(outputArray[countingArray[(this->nodeArray)[i].number]]),
-				&((this->nodeArray)[i]),
+	outputArray = (NODE *)malloc(sizeof(NODE)*(this->size));
+	for (int i=this->size - 1 ; i>=0 ; i--){
+		countingArray[(((this->nodeArray)[i].number)/divisor) % 10] -= 1;
+		memcpy(&(outputArray[countingArray[(((this->nodeArray)[i].number)/divisor) % 10]]),
+				&((this->nodeArray)[i]), 
 				sizeof(NODE));
 	}
 
 	memcpy(this->nodeArray, outputArray, sizeof(NODE)*(this->size));
-
 	free(outputArray);
-	free(countingArray);
+	return this;
+}
+
+ARRAY *ARRAY_METHOD_Sort(ARRAY *this)
+{
+	int max = 0;
+	int maxDigits = 0;
+
+	//Test Code
+#ifdef UNIT_TEST_ARRAY
+	if (FindDigitsNum(12345) != 5){
+		PRINTF_ERROR("ERROR: Test for FindDigitsNum(int) Failed.\n");
+		return NULL;
+	}
+#endif
+
+	//Exception Handling
+	if (this == NULL){
+		PRINTF_ERROR("ERROR: 'this' is NULL.\n");
+		return NULL;
+	}
+
+	max = FindMaximum(this);
+	maxDigits = FindDigitsNum(max);
+
+	//Executing Counting sorting several times
+	for (int i=0 ; i<maxDigits ; i++){
+		if (CountSort_Base_Ten(this, i)!=this){
+			PRINTF_ERROR("ERROR: CountSort_Base_Ten() Failed.\n");
+			return NULL;
+		}
+	}
 
 	return this;
 }
